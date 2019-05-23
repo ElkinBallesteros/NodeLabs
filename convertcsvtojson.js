@@ -28,7 +28,7 @@ const downloadF = (pathF)=>{
     })
     var newPathF = pathF.replace('.csv', '.json')
     
-    fs.writeFileSync(newPathF, JSON.stringify(dataJson))
+    fs.writeFileSync(newPathF, JSON.stringify(dataJson, null, 2))
 
     console.log('the file was converted, the new file is: ' + newPathF)
 }
