@@ -20,11 +20,6 @@ let limit = process.argv[2] || 100
 let parallelLimit = process.argv[3] || 10
 let startTime = datetime.create(Date.now(), 'd/m/Y H:M:S')
 
-if(customerAddresses > customers)
-    itemsProcess = customers.length
-else
-    itemsProcess = customerAddresses.length
-
 let tasks = []
 
 //Use connect method to connect to the server
@@ -51,17 +46,14 @@ MongoClient.connect(url, (error, db) => {
                     callback(error)
                 })
             })
-        }
-        
-        async.parallelLimit(tasks, parallelLimit, (error) => {
-            if(error) return process.env.exit(1)
-                console.log(parallelLimit + "tasks processed")
-                db.close()
-                if(index == (customers.length - 1)){
-                    console.log('Process stat at ' + startTime.format())
-                    var now = datetime.create(Date.now(), 'd/m/Y H:M:S')
-                    console.log('Process end at ' + now.format())
-                }
-        })
+        }    
     }
+	
+	async.parallelLimit(tasks, parallelLimit, (error) => {
+		if(error) return process.env.exit(1)
+        db.close()
+        console.log('Process stat at ' + startTime.format())
+        var now = datetime.create(Date.now(), 'd/m/Y H:M:S')
+        console.log('Process end at ' + now.format())
+	})
 })
